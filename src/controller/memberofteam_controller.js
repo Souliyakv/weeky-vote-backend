@@ -25,7 +25,11 @@ export const JoinTeam_Controller = async (req, res) => {
               if (result.affectedRows == 0) {
                 return res.json({ msg: "ບໍ່ສາມາດເຂົ້າຮ່ວມໄດ້" });
               } else {
-                return res.status(201).json({ msg: "ເຂົ້າຮ່ວມສຳເຫຼັດ" });
+                return res.status(201).json({
+                  team_id: team_id,
+                  Status: "USER",
+                  msg: "ເຂົ້າຮ່ວມສຳເຫຼັດ",
+                });
               }
             });
           }

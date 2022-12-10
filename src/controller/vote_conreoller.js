@@ -3,6 +3,9 @@ import { getConnection } from "../middleware/database.js";
 import { CHECKMEMBEROFTEAM } from "../model/memberofteam.js";
 import { CHECKVOTE, VOTE } from "../model/vote.js";
 
+
+//  give point and feetback to user
+
 export const Vote_Controller = async (req, res) => {
   try {
     const { team_id, user_id, point, Comment } = req.body;
@@ -16,6 +19,8 @@ export const Vote_Controller = async (req, res) => {
 
     const con = getConnection();
     const month = parseInt(new Date().getMonth() + 1);
+
+    //  set date to database for check point and feetback
 
     const voteDay =
       new Date().getFullYear() + "/" + month + "/" + new Date().getDate();
@@ -51,6 +56,8 @@ export const Vote_Controller = async (req, res) => {
     return console.log(error);
   }
 };
+
+//  see all point and feetback of user
 
 export const GetVoteOfUser_Controller = async(req,res)=>{
     try {

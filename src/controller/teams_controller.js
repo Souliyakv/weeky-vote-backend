@@ -33,6 +33,8 @@ export const AddTeam_Controller = async(req,res)=>{
     }
 }
 
+//  see all team of user
+
 export const GetTeamOfUser_Controller = async(req,res)=>{
     try {
         const USER_ID  = await authID(req.headers["token"]);
@@ -43,13 +45,15 @@ export const GetTeamOfUser_Controller = async(req,res)=>{
                 return res.status(202).json({msg:"ບໍ່ມີທີມ"});
             }else{
                 // return res.status(201).json(result);
-                return res.status(203).json(result);
+                return res.status(201).json(result);
             }
         })
     } catch (error) {
         return console.log(error);
     }
 }
+
+//  see detail team
 
 export const GetDetailTeam_Controller =async(req,res)=>{
     try {

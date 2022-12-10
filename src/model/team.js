@@ -13,4 +13,5 @@ export const CREATETABLE_TEAM = `CREATE TABLE teams(
 export const ADDTEAM = `INSERT INTO teams (team_id,team_name,image_url,creter_id,comment_day,description) VALUES ?`;
 // check team ກວດສອບວ່າມີທີມນີ້ແລ້ວຫຼືບໍ່
 export const CHECKTEAM = `SELECT * FROM teams WHERE team_id=?`;
+//  see all team of user
 export const GETTEAMOFUSER = `SELECT teams.team_id,teams.team_name,teams.image_url,teams.description,teams.createAt,memberofteam.Status FROM memberofteam INNER JOIN teams ON memberofteam.team_id=teams.team_id where memberofteam.user_id=?`;
