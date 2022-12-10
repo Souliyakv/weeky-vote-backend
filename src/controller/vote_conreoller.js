@@ -35,6 +35,10 @@ export const Vote_Controller = async (req, res) => {
       if (result === undefined || result.length <= 0) {
         return res.json({ msg: "ບໍ່ສາມາດໃຫ້ຄະແນນໄດ້" });
       } else {
+      
+        const comment_day = result[0].comment_day;
+       
+        if(new Date().getDay() != comment_day) return res.json({msg:"ບໍ່ສາມາດໃຫ້ຄະແນນໄດ້ໃນມື້ນີ້"});
         con.query(
           CHECKVOTE,
           [team_id, USER_ID, user_id, voteDay],
@@ -90,10 +94,10 @@ export const GetAllSum_Controller = async (req, res) => {
 export const GetAllCommentOfUser_Controller = async (req, res) => {
   try {
     const USER_ID = await authID(req.headers["token"]);
-    const { team_id, voteDay, user_id } = req.body;
+    const { team_id, user_id } = req.body;
     if (!team_id) return res.json({ msg: "ກະລຸນາເລືອກທີມຂອງເຈົ້າ" });
-    if (!voteDay) return res.json({ msg: "ວັນທີໂພສ" });
-    if (!user_id) return res.json({ msg: "ກະລຸນາເລືອກຄົນທີ່ເຈົ້າຕ້ອງການເບີ່ງ" });
+    if (!user_id)
+      return res.json({ msg: "ກະລຸນາເລືອກຄົນທີ່ເຈົ້າຕ້ອງການເບີ່ງ" });
     const con = getConnection();
 
     con.query(CHECKMEMBEROFTEAM, [USER_ID, team_id], (err, result) => {
@@ -103,9 +107,18 @@ export const GetAllCommentOfUser_Controller = async (req, res) => {
       } else {
         con.query(GETALLCOMMENTOFUSER, [team_id, user_id], (err, result) => {
           if (err) throw err;
-          return res.json({
-            type: "success",
-            result: result,
+          const allcomment = result;
+          con.query(GETSUMPOINT, [team_id, user_id], (err, result) => {
+            if (err) throw err;
+            if (result === undefined || result.length <= 0) {
+              return res.json({ msg: "ບໍ່ມີຂໍ້ມູນ" });
+            } else {
+              return res.json({
+                type: "success",
+                sumpoint: result[0].sumpoint,
+                result: allcomment,
+              });
+            }
           });
         });
       }

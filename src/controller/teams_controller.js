@@ -63,18 +63,23 @@ export const GetDetailTeam_Controller = async (req, res) => {
   try {
     const team_id = req.body.team_id;
     if (!team_id) return res.json({ msg: "ກະລຸນາເລືອກຫ້ອງຂອງເຈົ້າ" });
+    
     const con = getConnection();
     con.query(GETALLMEMBEROFTEAM, [team_id], (err, resultData) => {
       if (err) throw err;
-      return res.json({
-        type: "success",
-        team_id: team_id,
-        team_name: resultData[0].team_name,
-        image_url: resultData[0].image_url,
-        comment_day: resultData[0].comment_day,
-        description: resultData[0].description,
-        List: resultData,
-      });
+      if (resultData === undefined || resultData.length <= 0) {
+        return res.json({ msg: "ບໍ່ມີສິດເບີ່ງຂໍ້ມູນ" });
+      } else {
+        return res.json({
+          type: "success",
+          team_id: team_id,
+          team_name: resultData[0].team_name,
+          image_url: resultData[0].image_url,
+          comment_day: resultData[0].comment_day,
+          description: resultData[0].description,
+          List: resultData,
+        });
+      }
     });
   } catch (error) {
     return console.log(error);

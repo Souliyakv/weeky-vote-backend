@@ -12,6 +12,6 @@ export const ADDMEMBER = `INSERT INTO memberofteam (user_id,team_id,Status) VALU
 //  join to team ຂໍເຂົ້າຮ່ວມທີມ
 export const JOINTEAM = `INSERT INTO memberofteam (user_id,team_id) VALUES ?`;
 // check member in the team ກວດສອບວ່າເຈົ້າຢູ່ໃນກຸ່ມນີ້ແລ້ວບໍ່
-export const CHECKMEMBEROFTEAM = `SELECT * FROM memberofteam where user_id=? AND team_id=? AND DeleteAt ='NO'`;
+export const CHECKMEMBEROFTEAM = `SELECT * FROM memberofteam INNER JOIN teams ON memberofteam.team_id=teams.team_id where memberofteam.user_id=? AND memberofteam.team_id=? AND memberofteam.DeleteAt ='NO'`;
 //  see all member in team
 export const GETALLMEMBEROFTEAM = `SELECT users.user_id,users.fname,users.lname,users.imagePf,memberofteam.Status,memberofteam.MEMBER_ID,tb_positin.PS_name,teams.team_name,teams.image_url,teams.comment_day,teams.description FROM memberofteam INNER JOIN users ON users.user_id=memberofteam.user_id INNER JOIN tb_positin on tb_positin.PS_ID=users.position INNER JOIN teams ON teams.team_id=memberofteam.team_id WHERE memberofteam.team_id=? AND memberofteam.DeleteAt='NO'`

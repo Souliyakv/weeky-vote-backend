@@ -16,6 +16,6 @@ const api = '/api';
 app.use(api,router)
 
 app.listen(PORT,()=>{
-    console.log(`server start on port ${PORT}`);
+    console.log(`server start on port ${PORT} ${new Date().getDay()}`);
 })
 

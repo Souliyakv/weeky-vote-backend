@@ -4,7 +4,7 @@ export function getConnection(){
         host: 'localhost',
         user: 'root',
         password: '',
-        database: 'hackathon',
+        database: 'worky',
     })
     con.connect(function(err){
         if (err) {
