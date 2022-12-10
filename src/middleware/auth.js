@@ -35,12 +35,12 @@ export const authID = (data) => {
 
 export const CheckAuth = (req, res, next) => {
   const data= req.headers["token"];
-  if (!data) return res.status(500).json({ msg: "Please login" });
+  if (!data) return res.status(500).json({ msg: "ກະລຸນາເຂົ້າສູ່ລະບົບ" });
 
   const dataRes = verifyTokens(data);
 
   if (dataRes === undefined || dataRes.length <= 0) {
-    return res.status(500).json({ msg: "Please login" });
+    return res.status(500).json({ msg: "ກະລຸນາເຂົ້າສູ່ລະບົບ" });
   }
   const USER_ID = dataRes.data;
   

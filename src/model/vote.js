@@ -9,5 +9,7 @@ export const CREATETABLE_VOTE = `CREATE TABLE vote(
     voteAt timestamp DEFAULT CURRENT_TIMESTAMP
 )ENGINE=INNODB DEFAULT charset=utf8`;
 
-export const VOTE = ``;
-export const CKECKVOTE = `SELECT * FROM vote WHERE team_id=? AND voter_id = ? and user_id=? AND voteDay=?`;
+export const VOTE = `INSERT INTO vote(team_id,user_id,voter_id,point,Comment,voteDay) VALUES ?`;
+export const CHECKVOTE = `SELECT * FROM vote WHERE team_id=? AND voter_id = ? and user_id=? AND voteDay=?`;
+
+
