@@ -3,7 +3,7 @@ import { JoinTeam_Controller } from "../controller/memberofteam_controller.js";
 import { GetPosition_Controller } from "../controller/position_controller.js";
 import { AddTeam_Controller, GetDetailTeam_Controller, GetTeamOfUser_Controller } from "../controller/teams_controller.js";
 import { Login_Controller, Register_Controller } from "../controller/user_controller.js";
-import { Vote_Controller } from "../controller/vote_conreoller.js";
+import { GetAllCommentOfUser_Controller, GetAllSum_Controller, Vote_Controller } from "../controller/vote_conreoller.js";
 import { CheckAuth } from "../middleware/auth.js";
 
 const router = express.Router();
@@ -19,10 +19,12 @@ const router = express.Router();
  router.post(teams+'/addteam',CheckAuth,AddTeam_Controller);
  router.post(teams+'/jointeam',CheckAuth,JoinTeam_Controller);
  router.get(teams+'/GetTeamOfUser',CheckAuth,GetTeamOfUser_Controller);
- router.get(teams+'/GetDetailTeam',CheckAuth,GetDetailTeam_Controller);
+ router.post(teams+'/GetDetailTeam',CheckAuth,GetDetailTeam_Controller);
 
  const vote = '/vote';
 
  router.post(vote+'/vote',CheckAuth,Vote_Controller);
+ router.post(vote+'/GetAllSum',CheckAuth,GetAllSum_Controller);
+ router.post(vote+'/getallcoomentofuser',CheckAuth,GetAllCommentOfUser_Controller);
 
 export default router;

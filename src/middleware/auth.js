@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import { CHECKUSERID } from "../model/users.js";
-import { getConnection } from "./database.js";
+import { getConnection } from "../config/database.js";
 
 dotenv.config();
 const SECRET_KEY = process.env.SECRET_KEY;
