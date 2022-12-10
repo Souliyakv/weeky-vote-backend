@@ -1,9 +1,9 @@
 import { authID, CheckAuth } from "../middleware/auth.js";
 import UploadImage from "../middleware/cloudinary.js";
 import { getConnection } from "../middleware/database.js";
-import { ADDTEAM } from "../model/team.js";
+import { ADDTEAM, GETTEAMOFUSER } from "../model/team.js";
 import {v4 as uuidv4} from "uuid";
-import { ADDMEMBER } from "../model/memberofteam.js";
+import { ADDMEMBER, GETALLMEMBEROFTEAM } from "../model/memberofteam.js";
 
 // create team ສ້າງທີມ
 export const AddTeam_Controller = async(req,res)=>{
@@ -30,5 +30,47 @@ export const AddTeam_Controller = async(req,res)=>{
         });
     } catch (error) {
         return console.log(error);
+    }
+}
+
+export const GetTeamOfUser_Controller = async(req,res)=>{
+    try {
+        const USER_ID  = await authID(req.headers["token"]);
+        const con = getConnection();
+        con.query(GETTEAMOFUSER,[USER_ID],(err,result)=>{
+            if(err) throw err;
+            if(result === undefined || result <=0){
+                return res.status(202).json({msg:"ບໍ່ມີທີມ"});
+            }else{
+                // return res.status(201).json(result);
+                return res.status(203).json(result);
+            }
+        })
+    } catch (error) {
+        return console.log(error);
+    }
+}
+
+export const GetDetailTeam_Controller =async(req,res)=>{
+    try {
+        
+        const team_id = req.body.team_id;
+        if(!team_id) return res.json({msg:"ກະລຸນາເລືອກຫ້ອງຂອງເຈົ້າ"});
+        const con = getConnection();
+        con.query(GETALLMEMBEROFTEAM,[team_id],(err,resultData)=>{
+            if(err) throw err;
+            return res.status(201).json({
+                team_id:team_id,
+                team_name:resultData[0].team_name,
+                image_url:resultData[0].image_url,
+                comment_day:resultData[0].comment_day,
+                description:resultData[0].description,
+                List:resultData
+            });
+        })
+
+        
+    } catch (error) {
+       return console.log(error); 
     }
 }
