@@ -1,11 +1,11 @@
 import { authID, CheckAuth } from "../middleware/auth.js";
 import UploadImage from "../config/cloudinary.js";
 import { getConnection } from "../config/database.js";
-import { ADDTEAM, GETTEAMOFUSER } from "../model/team.js";
+import { ADDTEAM, CHECKTEAMOFUSER, GETTEAMOFUSER } from "../model/team.js";
 import { v4 as uuidv4 } from "uuid";
 import { ADDMEMBER, GETALLMEMBEROFTEAM } from "../model/memberofteam.js";
 
-// create team ສ້າງທີມ
+// Create team 
 export const AddTeam_Controller = async (req, res) => {
   try {
     const { team_name, image_url, comment_day, description } = req.body;
@@ -17,15 +17,22 @@ export const AddTeam_Controller = async (req, res) => {
     const values = [
       [uid, team_name, image, CREATER_ID, comment_day, description],
     ];
-    con.query(ADDTEAM, [values], (err, result) => {
-      if (err) throw err;
-      if (result.affectedRows == 0) {
-        return res.json({ msg: "ບໍ່ສາມາດສ້າງຫ້ອງໄດ້" });
+    con.query(CHECKTEAMOFUSER, [CREATER_ID], (errTou, resultTou) => {
+      if (errTou) throw errTou;
+      if (resultTou === undefined || resultTou.length > 0) {
+        return res.json({ msg: "ທ່ານມີທີມຢູ່ແລ້ວ" });
       } else {
-        const value = [[CREATER_ID, uid, "ADMIN"]];
-        con.query(ADDMEMBER, [value], (err, result) => {
-          if (err) throw err;
-          return res.status(201).json({ msg: "ສ້າງຫ້ອງສຳເຫຼັດ" });
+        con.query(ADDTEAM, [values], (errAt, resultAt) => {
+          if (errAt) throw errAt;
+          if (resultAt.affectedRows == 0) {
+            return res.json({ msg: "ບໍ່ສາມາດສ້າງຫ້ອງໄດ້" });
+          } else {
+            const value = [[CREATER_ID, uid, "ADMIN"]];
+            con.query(ADDMEMBER, [value], (err, result) => {
+              if (err) throw err;
+              return res.status(201).json({ msg: "ສ້າງຫ້ອງສຳເຫຼັດ" });
+            });
+          }
         });
       }
     });
@@ -34,7 +41,7 @@ export const AddTeam_Controller = async (req, res) => {
   }
 };
 
-//  see all team of user
+//  see all user's team 
 
 export const GetTeamOfUser_Controller = async (req, res) => {
   try {
@@ -45,7 +52,6 @@ export const GetTeamOfUser_Controller = async (req, res) => {
       if (result === undefined || result <= 0) {
         return res.json({ msg: "ບໍ່ມີທີມ" });
       } else {
-        // return res.status(201).json(result);
         return res.json({
           type: "success",
           result,
@@ -63,7 +69,7 @@ export const GetDetailTeam_Controller = async (req, res) => {
   try {
     const team_id = req.body.team_id;
     if (!team_id) return res.json({ msg: "ກະລຸນາເລືອກຫ້ອງຂອງເຈົ້າ" });
-    
+
     const con = getConnection();
     con.query(GETALLMEMBEROFTEAM, [team_id], (err, resultData) => {
       if (err) throw err;

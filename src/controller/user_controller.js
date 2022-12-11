@@ -8,7 +8,7 @@ import {
 } from "../middleware/auth.js";
 import UploadImage from "../config/cloudinary.js";
 
-//  register ສ້າງບັນຊີຜູ້ໃຊ້
+//  Create register 
 export const Register_Controller = (req, res) => {
   const con = getConnection();
   try {
@@ -18,6 +18,8 @@ export const Register_Controller = (req, res) => {
     if (!email) return res.json({ msg: "ກະລຸນາໃສ່ email ຂອງເຈົ້າ" });
     if (!password) return res.json({ msg: "ກະລຸນາໃສ່ລະຫັດຜ່ານຂອງເຈົ້າ" });
     if (!position) return res.json({ msg: "ກະລຸນາເລືອກຕຳແໜ່ງຂອງເຈົ້າ" });
+
+    // Check user regist 
     con.query(CHECKEMAIL, [email], async (err, result) => {
       if (err) throw err;
       if (result === undefined || result.length > 0) {
@@ -48,7 +50,7 @@ export const Register_Controller = (req, res) => {
   }
 };
 
-//  Login ເຂົ້າສູ່ລະບົບ
+//  Login user 
 
 export const Login_Controller = (req, res) => {
   try {
@@ -56,6 +58,7 @@ export const Login_Controller = (req, res) => {
     const { email, password } = req.body;
     if (!email) return res.json({ msg: "ກະລຸນາໃສ່ Email ຂອງເຈົ້າ" });
     if (!password) return res.json({ msg: "ກະລຸນາໃສ່ລະຫັດຜ່ານຂອງເຈົ້າ" });
+    // Check user login 
     con.query(CHECKEMAIL, [email], async (err, result) => {
       if (err) throw err;
       if (result === undefined || result.length <= 0)

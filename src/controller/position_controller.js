@@ -1,7 +1,7 @@
 import { getConnection } from "../config/database.js";
 import { GETPOSITION } from "../model/position.js";
 
-// get all pposition ດືງຂໍ້ມູນຕຳແໜ່ງທັງໝົດ
+// get all position data.  
 
 export const GetPosition_Controller = (req, res) => {
   const con = getConnection();

@@ -14,7 +14,7 @@ This is backend side.
 
 
 How to set up this project
-
+ 
 1. first tpye 'npm install' in terminal
 8. Second run 'npm start' in terminal
 
